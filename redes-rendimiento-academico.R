@@ -29,7 +29,7 @@ getwd()
 
 # Directorio de carpeta
 myPath <- "/Users/valentinacardona/Documents/Code Nerd/GitHub/redes-rendimiento-academico"
-setwd(mypath)
+setwd(myPath)
 
 #=================#
 #### 3. Datos ####
@@ -42,7 +42,7 @@ load("Datos/Datos_COL.RData")
 # Calcular media de las áreas
 datos <- STU_QQQ_COL %>% 
   left_join(CRT_COG_COL[c("CNTSTUID", paste0("PV", 1:10, "CRTH_NC"))], by = "CNTSTUID") %>% 
-  mutate(MATH = rowMeans(across(PV1MATH:PV10MATH), na.rm = TRUE),
+  dplyr::mutate(MATH = rowMeans(across(PV1MATH:PV10MATH), na.rm = TRUE),
          READ = rowMeans(across(PV1READ:PV10READ), na.rm = TRUE),
          SCIE = rowMeans(across(PV1SCIE:PV10SCIE), na.rm = TRUE),
          CRTH = rowMeans(across(PV1CRTH_NC:PV10CRTH_NC), na.rm = TRUE))
@@ -57,7 +57,7 @@ datos %<>%
     # Factores demográficos
     ST004D01T, STRATUM, REGION, IMMIG,
     # Factores socioeconómicos
-    MISCED, FISCED, ICTRES, HOMEPOS, ESCS,
+    ICTRES, HOMEPOS, ESCS,
     # Factores educativos
     RELATST, BELONG, BULLIED, FEELSAFE, SCHRISK,
     SCHSUST, LEARRES, PROBSELF, PARINVOL, PQSCHOOL,
@@ -68,16 +68,15 @@ datos %<>%
     # Factores de aprendizaje
     STUDYHMW, REPEAT, MISSSC, SKIPPING, FAMSUPSL,
     # Matemáticas
-    MATHPREF, MATHEASE, MATHMOT, DISCLIM, TEACHSUP,
-    FAMCON, ANXMAT, MATHPERS,
+    ANXMAT,
     # Pensamiento creativo
     CREATEFF, CREATSCH, CREATFAM, CREATAS, CREATOOS, CREATOP, 
     OPENART, IMAGINE,
     CREATHME, CREATACT, CREATOPN, CREATOR
     )
+head(datos)
 
 # Importar CodeBook
-list.files("Datos")
 codebook <- read_excel("Datos/CY08MSP_CODEBOOK_27thJune24.xlsx", sheet = "CY08MSP_STU_QQQ")
 labels <- codebook %>%
   fill(NAME, VARLABEL, TYPE, FORMAT, VARNUM, MINMAX, .direction = "down") %>% 
@@ -96,6 +95,7 @@ for (col in names(datos)) {
 
 # Convertir todas las columnas a numéricas
 datos %<>% mutate_all(as.numeric)
+head(datos)
 
 # Verificar
 ## Si hay columnas con valores nulos > 50% de los datos
