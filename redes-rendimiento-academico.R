@@ -188,9 +188,9 @@ png(filename = "Imagenes/Medidas_MatrizCorr.png", width = 600, height = 400)
 centralityPlot(g, include = c("Betweenness", "Closeness", "Strength"))
 dev.off()
 
-#=================#
-#### 6. Modelo ####
-#=================#
+#==================#
+#### 6. G-LASSO ####
+#==================#
 set.seed(2024)
 png(filename = "Imagenes/G_LASSO.png", width = 1400, height = 800)
 glasso <- qgraph(cor_matrix,
@@ -210,28 +210,7 @@ png(filename = "Imagenes/Medidas_G_LASSO.png", width = 600, height = 400)
 centralityPlot(glasso, include = c("Betweenness", "Closeness", "Strength"))
 dev.off()
 
-#=============================#
-#### 7. Validación cruzada ####
-#=============================#
-
-n <- ncol(cor_matrix)
-M <- n*(n-1)/2
-L <- 10
-set.seed(2024)
-
-
-bs <- rmultinom(n = B, size = n, prob = alpha)
-GSIM<-NULL
-for (i in 1:B){
-  GSIM[[i]]<-igraph::sample_sbm(n = vcount(gcc_work), pref.matrix = Pi, block.sizes = bs[,i], directed = F)
-}
-
-
-
-
-
-
-
+## OTROS
 # # MGM
 # cat_vars <- c("EXERPRAC","FISCED", "GENERO", "MISCED", "MISSSC", "REPEAT",
 #               "SECTOR", "STUDYHMW", "WORKHOME", "WORKPAY")
